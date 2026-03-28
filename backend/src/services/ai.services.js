@@ -1,4 +1,4 @@
-const {GoogleGenAI} = require("@google/genai");
+const {GoogleGenAI, Type, Schema } = require("@google/genai");
 const { z } =  require("zod");
 const { zodToJsonSchema } = require("zod-to-json-schema");
 
@@ -24,18 +24,18 @@ const interviewReportSchema  = z.object({
         severity: z.enum(["low", "medium", "high"]).describe("The severity of the skill gap, how important is it for the candidate to work on this skill gap to be a better fit for the job role"),
     })).describe("List of skill gaps that the candidate has, along with their severity "),
     preparationPlan : z.array(z.object({
-        day: z.string().describe("The day of the preparation plan, starting from Day 1, Day 2, etc."),
+        day: z.number().describe("The day of the preparation plan, starting from Day 1, Day 2, etc."),
         focus: z.string().describe("The main focus of this day in the preparation plan, e.g. data structures, system design, mock interviews etc."),
         tasks: z.array(z.string()).describe("List of tasks to be done on this day to follow the preparation plan, e.g. read a specific book or article, solve a set of problems, watch a video etc.")
     })).describe("A day-wise preparation plan for the candidate to follow in order to prepare for the interview effectively"),
-})
+});
 
 async function generateInterviewReport({resume,selfDescription, jobDescription}) {
 
-     const prompt = `Generate an interview report for a candidate with the following details:
+     const prompt = `Generate an interview report for a candidate with the following details :
                         Resume: ${resume}
                         Self Description: ${selfDescription}
-                        Job Description: ${jobDescription}
+                        Job Description: ${jobDescription} 
 `
 
     const response = await ai.models.generateContent({
@@ -43,9 +43,68 @@ async function generateInterviewReport({resume,selfDescription, jobDescription})
         contents : prompt,
         config: {
             responseMimeType : "application/json",
-            responseSchema: zodToJsonSchema(interviewReportSchema), 
+            responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                    matchScore: {
+                        type: Type.INTEGER,
+                        description: "A score between 0 and 100 indicating how well the candidate's profile matches the job describe"
+                    },
+                    technicalQuestions: {
+                        type: Type.ARRAY,
+                        items: {
+                            type: Type.OBJECT,
+                            properties: {
+                                question: { type: Type.STRING, description: "The technical question can be asked in the interview" },
+                                intention: { type: Type.STRING, description: "The intention of interviewer behind asking the question in the interview" },
+                                answer: { type: Type.STRING, description: "How to answer this question" }
+                            },
+                        },
+                        description: "Technical questions that can be asked in the interview"
+                    },
+                    behavioralQuestions: {
+                        type: Type.ARRAY,
+                        items: {
+                            type: Type.OBJECT,
+                            properties: {
+                                question: { type: Type.STRING, description: "The behavioral question can be asked in the interview" },
+                                intention: { type: Type.STRING, description: "The intention of interviewer behind asking the question in the interview" },
+                                answer: { type: Type.STRING, description: "How to answer this question" }
+                            }  },
+                        description: "Behavioral questions that can be asked in the interview"
+                    },
+                    skillGaps: {
+                        type: Type.ARRAY,
+                        items: {
+                            type: Type.OBJECT,
+                            properties: {
+                                skill: { type: Type.STRING, description: "The skill which the candidate is lacking" },
+                                severity: { type: Type.STRING, enum: ["low", "medium", "high"], description: "The severity of the skill gap" }
+                            }
+                        },
+                        description: "List of skill gaps that the candidate has"
+                    },
+                    preparationPlan: {
+                        type: Type.ARRAY,
+                        items: {
+                            type: Type.OBJECT,
+                            properties: {
+                                day: { type: Type.INTEGER, description: "The day of the preparation plan" },
+                                focus: { type: Type.STRING, description: "The main focus of this day" },
+                                tasks: { 
+                                    type: Type.ARRAY, 
+                                    items: { type: Type.STRING },
+                                    description: "List of tasks to be done on this day" 
+                                }
+                            }
+                        }, description: "A day-wise preparation plan"
+                    }
+                }
+            } 
+            // or simple use -->
+            // responseSchema: zodToJsonSchema(interviewReportSchema) // <-- Change this line back
         }
-    })
+    });
 
     return JSON.parse(response.text);
 }
