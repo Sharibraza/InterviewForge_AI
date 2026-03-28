@@ -72,7 +72,7 @@ const behavioralQuestionSchema = new mongoose.Schema({
 })
 
 const skillGapSchema = new mongoose.Schema({
-    skills : {
+    skill : {
         type : String,
         required : [true, "Skill is required"]
     },
@@ -95,10 +95,10 @@ const preparationPlanSchema = new mongoose.Schema({
         type : String,
         required : [true, "Focus is required"]
     },
-    tasks : {
-        type : String,
-        required : [true, "Task is required"]
-    },
+    tasks : [ {
+        type: String,
+        required: [ true, "Task is required" ]
+    } ],
 }, {
     _id : false
 })
@@ -109,7 +109,7 @@ const interviewReportSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    resumet : {
+    resume : {
         type : String
     },
     selfDescription : {
@@ -123,7 +123,11 @@ const interviewReportSchema = new mongoose.Schema({
     technicalQuestions : [technicalQuestionSchema],
     behavioralQuestions : [behavioralQuestionSchema],
     skillGaps : [skillGapSchema],
-    preparationPlan : [preparationPlanSchema]
+    preparationPlan : [preparationPlanSchema],
+    user : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "users"
+    }
 },{
     timestamps : true
 })
