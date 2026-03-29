@@ -156,7 +156,14 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
         contents: prompt,
         config: {
             responseMimeType: "application/json",
-            responseSchema: zodToJsonSchema(resumePdfSchema),
+            responseSchema: 
+            // zodToJsonSchema(resumePdfSchema),
+            {
+                type: Type.OBJECT,
+                properties: {
+                    html: { type: Type.STRING, description: "The HTML content of the resume which can be converted to PDF using any library like puppeteer" }
+                }
+            },
         }
     })
 
