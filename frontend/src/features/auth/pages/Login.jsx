@@ -65,6 +65,7 @@ import "../auth.form.scss"
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router'
 import Loading from '../../../components/Loading'
+import Navbar from '../../../components/Navbar'
 
 export default function Login() {
 
@@ -88,6 +89,8 @@ export default function Login() {
     }
 
     return (
+        <>
+        <Navbar/>
         <main className="auth-main">
             <div className="auth-container">
                 {/* Left Side - Login Form */}
@@ -148,5 +151,6 @@ export default function Login() {
                 </div>
             </div>
         </main>
+         </>
     )
 }

@@ -71,6 +71,7 @@ import { Link, useNavigate } from "react-router"
 import { useAuth } from '../hooks/useAuth';
 import Loading from '../../../components/Loading';
 import "../auth.form.scss"
+import Navbar from '../../../components/Navbar';
 
 export default function Register() {
 
@@ -95,6 +96,9 @@ export default function Register() {
   }
 
   return (
+    <>
+       <Navbar/> 
+    
     <main className="auth-main">
       <div className="auth-container">
         {/* Left Side - Register Form */}
@@ -155,5 +159,6 @@ export default function Register() {
         </div>
       </div>
     </main>
+    </>
   )
 }

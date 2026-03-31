@@ -360,7 +360,7 @@ $font-stack:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robot
     display: flex;
     gap: 1.5rem;
 
-    a {
+    p {
         font-size: 0.8rem;
         color: $text-muted;
         text-decoration: none;
@@ -369,5 +369,11 @@ $font-stack:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robot
         &:hover {
             color: $text-primary;
         }
+    }
+
+    #sharib{
+        font-weight: 600;
+        color: #ff2d78 ;
+        cursor: pointer;
     }
 }
