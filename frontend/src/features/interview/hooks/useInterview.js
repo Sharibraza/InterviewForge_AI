@@ -1,6 +1,6 @@
 import { getAllInterviewReports, generateInterviewReport, getInterviewReportById, generateResumePdf } from "../services/interview.api"
 import { useContext, useEffect } from "react"
-import { InterviewContext } from "../interview.context"
+import { InterviewContext } from "../interview.context.jsx"
 import { useParams } from "react-router"
 
 
@@ -20,6 +20,8 @@ export const useInterview = () => {
         let response = null
         try {
             response = await generateInterviewReport({ jobDescription, selfDescription, resumeFile })
+            console.log(response.interviewReport);
+            
             setReport(response.interviewReport)
         } catch (error) {
             console.log(error)

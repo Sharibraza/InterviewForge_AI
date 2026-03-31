@@ -1,6 +1,7 @@
 const { GoogleGenAI, Type, Schema } = require("@google/genai");
 const { z } = require("zod");
 const { zodToJsonSchema } = require("zod-to-json-schema");
+const puppeteer = require("puppeteer")
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_GENAPI_API_KEY
@@ -100,7 +101,11 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
                                 }
                             }
                         }, description: "A day-wise preparation plan"
-                    }
+                    },
+                    title: {
+                        type: Type.STRING,
+                        description: "The title of the job for which the interview report is generated"
+                    },
                 }
             }
             // or simple use -->
@@ -118,10 +123,10 @@ async function generatePdfFromHtml(htmlContent) {
 
     const pdfBuffer = await page.pdf({
         format: "A4", margin: {
-            top: "20mm",
-            bottom: "20mm",
-            left: "15mm",
-            right: "15mm"
+            top: "5mm",
+            bottom: "5mm",
+            left: "10mm",
+            right: "10mm"
         }
     })
 
@@ -148,7 +153,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                         you can highlight the content using some colors or different font styles but the overall design should be simple and professional.
                         The content should be ATS friendly, i.e. it should be easily parsable by ATS systems without losing important information.
                         The resume should not be so lengthy, it should ideally be 1-2 pages long when converted to PDF. Focus on quality rather than quantity and make sure to include all the relevant information that can increase the candidate's chances of getting an interview call for the given job description.
-                        Wrap all the content in a single page and avoid breaking it into multiple pages. Use appropriate headings, bullet points, and sections to organize the content effectively.
+                        The Resume must be in single page and avoid breaking it into multiple pages. Use appropriate headings, bullet points, and sections to organize the content effectively.
                     `
 
     const response = await ai.models.generateContent({

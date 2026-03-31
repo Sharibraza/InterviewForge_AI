@@ -45,7 +45,9 @@ async function registerUserController(req, res) {
 
     res.cookie("token", token);
 
-    res.status(2010).json({
+    console.log(req.cookies.token); 
+    
+    res.status(200).json({
         message: "User registered successfully",
         user: {
             id: user._id,

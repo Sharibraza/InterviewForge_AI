@@ -2,6 +2,10 @@ import React, { useState, useRef } from 'react'
 import "../style/home.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
+import { useAuth } from "../../auth/hooks/useAuth.js";
+import Loading from '../../../components/Loading.jsx';
+import Navbar from '../../../components/Navbar.jsx';
+
 
 const Home = () => {
 
@@ -9,7 +13,7 @@ const Home = () => {
     const [ jobDescription, setJobDescription ] = useState("")
     const [ selfDescription, setSelfDescription ] = useState("")
     const resumeInputRef = useRef()
-
+    const {user} = useAuth();
     const navigate = useNavigate()
 
     const handleGenerateReport = async () => {
@@ -21,12 +25,14 @@ const Home = () => {
     if (loading) {
         return (
             <main className='loading-screen'>
-                <h1>Loading your interview plan...</h1>
+                <Loading/>
             </main>
         )
     }
 
     return (
+        <>
+        <Navbar/>
         <div className='home-page'>
 
             {/* Page Header */}
@@ -71,7 +77,7 @@ const Home = () => {
 
                         {/* Upload Resume */}
                         <div className='upload-section'>
-                            <label className='section-label'>
+                            <label className='section-label' htmlFor='resume'>
                                 Upload Resume
                                 <span className='badge badge--best'>Best Results</span>
                             </label>
@@ -145,6 +151,7 @@ const Home = () => {
                 <a href='#'>Help Center</a>
             </footer>
         </div>
+         </>
     )
 }
 

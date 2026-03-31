@@ -1,0 +1,354 @@
+// ── Variables (mirrors home.scss palette) ─────────────────────────────────────
+$bg-page:      #0d1117;
+$bg-card:      #161b22;
+$bg-panel:     #1c2230;
+$border-color: #2a3348;
+$text-primary: #e6edf3;
+$text-muted:   #7d8590;
+$accent:       #ff2d78;
+$accent-alt:   #ff6b9d;
+
+// ── Nav Shell ─────────────────────────────────────────────────────────────────
+.strike-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    background: rgba($bg-page, 0.82);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border-bottom: 1px solid rgba($border-color, 0.7);
+
+    &__glow-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, $accent 40%, $accent-alt 60%, transparent 100%);
+        opacity: 0.5;
+    }
+
+    &__inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+// ── Logo ──────────────────────────────────────────────────────────────────────
+.strike-nav__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    text-decoration: none;
+
+    &-icon {
+        display: flex;
+        align-items: center;
+        filter: drop-shadow(0 0 6px rgba($accent, 0.55));
+        transition: filter 0.3s;
+    }
+
+    &-text {
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: $text-primary;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+
+        // accent underline on hover
+        position: relative;
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, $accent, $accent-alt);
+            border-radius: 2px;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    }
+
+    &:hover .strike-nav__logo-icon {
+        filter: drop-shadow(0 0 10px rgba($accent, 0.85));
+    }
+
+    &:hover .strike-nav__logo-text::after {
+        width: 100%;
+    }
+}
+
+// ── Right side ────────────────────────────────────────────────────────────────
+.strike-nav__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+// ── Get Started CTA Button ────────────────────────────────────────────────────
+.strike-nav__cta {
+    position: relative;
+    overflow: hidden;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background: linear-gradient(135deg, $accent 0%, darken($accent, 8%) 100%);
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    font-family: inherit;
+    transition: transform 0.15s, box-shadow 0.25s;
+    box-shadow: 0 0 0 rgba($accent, 0);
+
+    // animated shimmer layer
+    &-shimmer {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            110deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.18) 50%,
+            transparent 70%
+        );
+        background-size: 200% 100%;
+        background-position: -100% 0;
+        animation: shimmer 2.2s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    &-label {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+
+        svg {
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    }
+
+    // ripple
+    &-ripple {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.45);
+        transform: translate(-50%, -50%) scale(0);
+        animation: ripple 0.65s ease-out forwards;
+        pointer-events: none;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba($accent, 0.45);
+
+        .strike-nav__cta-label svg {
+            transform: translateX(3px);
+        }
+    }
+
+    &:active {
+        transform: translateY(0) scale(0.97);
+        box-shadow: 0 2px 10px rgba($accent, 0.3);
+    }
+}
+
+// ── Avatar ────────────────────────────────────────────────────────────────────
+.strike-nav__avatar-wrap {
+    position: relative;
+}
+
+.strike-nav__avatar {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, rgba($accent, 0.2) 0%, rgba($accent-alt, 0.15) 100%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+
+    &-ring {
+        position: absolute;
+        inset: -2px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        background: linear-gradient($bg-page, $bg-page) padding-box,
+                    linear-gradient(135deg, $accent, $accent-alt) border-box;
+        transition: opacity 0.2s;
+        opacity: 0.7;
+    }
+
+    &-letter {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: $text-primary;
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover {
+        transform: scale(1.07);
+
+        .strike-nav__avatar-ring {
+            opacity: 1;
+        }
+    }
+}
+
+.strike-nav__avatar-wrap--open .strike-nav__avatar {
+    transform: scale(1.07);
+    .strike-nav__avatar-ring { opacity: 1; }
+}
+
+// ── Dropdown ──────────────────────────────────────────────────────────────────
+.strike-nav__dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 220px;
+    background: $bg-card;
+    border: 1px solid $border-color;
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba($accent, 0.08);
+
+    // enter/exit
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top right;
+
+    &--visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+    }
+
+    &-arrow {
+        position: absolute;
+        top: -5px;
+        right: 12px;
+        width: 10px;
+        height: 10px;
+        background: $bg-card;
+        border-left: 1px solid $border-color;
+        border-top: 1px solid $border-color;
+        transform: rotate(45deg);
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.6rem 0.6rem 0.7rem;
+    }
+
+    &-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, $accent 0%, $accent-alt 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    &-name {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: $text-primary;
+        margin: 0 0 0.1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 130px;
+    }
+
+    &-email {
+        font-size: 0.72rem;
+        color: $text-muted;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 130px;
+    }
+
+    &-divider {
+        height: 1px;
+        background: $border-color;
+        margin: 0.25rem 0;
+    }
+
+    &-item {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        width: 100%;
+        padding: 0.55rem 0.7rem;
+        border-radius: 0.4rem;
+        background: none;
+        border: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: $text-primary;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.15s, color 0.15s;
+        font-family: inherit;
+        text-align: left;
+
+        svg {
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        &:hover {
+            background: rgba($text-primary, 0.06);
+        }
+
+        &--danger {
+            color: #ff6b6b;
+
+            svg { opacity: 0.8; }
+
+            &:hover {
+                background: rgba(#ff6b6b, 0.1);
+                color: #ff8888;
+            }
+        }
+    }
+}
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+@keyframes shimmer {
+    0%   { background-position: -100% 0; }
+    60%  { background-position: 200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes ripple {
+    to {
+        transform: translate(-50%, -50%) scale(28);
+        opacity: 0;
+    }
+}
