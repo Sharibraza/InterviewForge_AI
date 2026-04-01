@@ -59,7 +59,7 @@ export default function Navbar() {
                             </defs>
                         </svg>
                     </span>
-                    <span className="strike-nav__logo-text">Strike</span>
+                    <span className="strike-nav__logo-text">StriveX</span>
                 </Link>
 
                 {/* ── Right Side ── */}
