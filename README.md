@@ -1,4 +1,4 @@
-# InterviewForge AI
+# StriveX
 
 Full-stack web application for AI-assisted interview preparation.
 
